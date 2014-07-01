@@ -5,10 +5,10 @@
  *      author - user who created the squeak
  *      content - text of the squeak
  */
-var Squeak = React.createClass({
+var SqueakEntry = React.createClass({
     render: function() {
         return (
-            <div className="squeak">
+            <div className="squeak-entry">
                 <h3 className="squeak-author">{this.props.author}</h3>
                 <span className="squeak-content">{this.props.content}</span>
             </div>
@@ -18,13 +18,13 @@ var Squeak = React.createClass({
 
 /**
  *  Properties:
- *      squeakData - raw data from the server
+ *      squeakData - parsed json data from the server
  */
 var SqueakList = React.createClass({
     render: function() {
         var squeakNodes = this.props.squeakData.map(function(squeak) {
             return (
-                <Squeak author={squeak.author} content={squeak.content} key={squeak.key} />
+                <SqueakEntry author={squeak.author} content={squeak.content} key={squeak.key} />
             );
         });
         return (
@@ -36,11 +36,11 @@ var SqueakList = React.createClass({
 });
 
 var SqueakForm = React.createClass({
-    handleSubmit: function() {
+    handleSubmit: function(e) {
+        e.preventDefault();
         var content = this.refs.content.getDOMNode().value.trim();
         this.props.onSqueakSubmit({content: content});
         this.refs.content.getDOMNode().value = '';
-        return false;
     },
     render: function() {
         return (
@@ -57,13 +57,13 @@ var SqueakForm = React.createClass({
  *      onSignIn - callback to handle form submission
  */
 var SqueakSignInForm = React.createClass({
-    handleSubmit: function() {
+    handleSubmit: function(e) {
+        e.preventDefault();
         var username = this.refs.username.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
         this.props.onSignIn(username, password);
         this.refs.username.getDOMNode().value = '';
         this.refs.password.getDOMNode().value = '';
-        return false
     },
     render: function() {
         return (
@@ -82,9 +82,9 @@ var SqueakSignInForm = React.createClass({
  *
  */
 var SqueakSignOutForm = React.createClass({
-    handleSubmit: function() {
+    handleSubmit: function(e) {
+        e.preventDefault();
         this.props.onSignOut();
-        return false;
     },
     render: function() {
         return (
